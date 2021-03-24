@@ -1,0 +1,3 @@
+/etc/udev/rules.d/98-touchscreen-cal.rules 
+/etc/udev/hwdb.d/61-sensor-local.hwdb
+
