@@ -102,4 +102,67 @@ with the help of the site https://wiki.archlinux.org/index.php/Talk:Calibrating_
      ATTRS{name}=="Goodix Capacitive TouchScreen", ENV{LIBINPUT_CALIBRATION_MATRIX}="-1 0.0 1 0.0 1 0"
 
 #end
-Now I have ubuntu running fine on my TrekStor Duo W1 10.1 with Baily Trail proc and ugly sensor and touchscreen.
+Now I have ubuntu running fine on my TrekStor Duo W1 10.1 with Bay Trail proc and ugly sensor and touchscreen.
+
+#update
+##Repair EFI grub loader
+
+In case you need to repair the boot loader or accidently get into the grub console: How to repair the EFI Grub loader using the ubuntu usb live media:
+
+The partition table of the TrekStor:
+
+    #(parted) print                                                            
+    #Model: MMC NCard (sd/mmc)
+    #Disk /dev/mmcblk0: 31,0GB
+    #Sector size (logical/physical): 512B/512B
+    #Partition Table: gpt
+    #Disk Flags: 
+    #
+    #Number  Start   End     Size    File system  Name                       Flags
+    # 1      1049kB  556MB   555MB   ntfs         Basic data partition          hidden, diag
+    # 2      556MB   661MB   105MB   fat32        EFI   System Partition          boot, esp
+    # 3      661MB   677MB   16,8MB               Microsoft reserved partition  msftres
+    # 4      677MB   1751MB  1074MB  ext4
+    # 5      1751MB  31,0GB  29,3GB  ext4
+
+Then from the live usb ubuntu terminal:
+
+    sudo mount /dev/mmcblk0p5 /mnt
+    sudo mount /dev/mmcblk0p2 /mnt/boot/efi
+    for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done
+    sudo chroot /mnt
+    grub-install /dev/mmcblk0
+    update-grub  
+
+That's it.
+
+##Final change? Remapping keys of the hardware keyboard
+
+The TrekStor SurfTab Duo W1 10.1 comes with a attachable keyboard. Unfortunately it has PageUp and PageDown on the FN level, but Home and End is directly usabale. As I often need to scroll up and down using the Page Up/Down keys, I need these keys in the normal level of the keypad. I can remap after login/resume with the script:
+
+    #!/bin/sh
+    xmodmap -e "keycode 110 = Prior"
+    xmodmap -e "keycode 115 = Next"
+    xmodmap -e "keycode 112 = Home"
+    xmodmap -e "keycode 117 = End"
+
+But this nasty and I want these to be mapped all the time. I found a good description at https://yulistic.gitlab.io/2017/12/linux-keymapping-with-udev-hwdb/.
+
+For me I had to add 
+
+    sudo vim /etc/udev/hwdb.d/99-HHKB-keyboard.hwdb
+    
+    # the evdev address product, vendor must be entered in upper case HEX values
+    # the key names must be entered without KEY_ and in lower case
+    evdev:input:b0003v1c4fp0063*
+      KEYBOARD_KEY_7004a=pageup
+      KEYBOARD_KEY_7004d=pagedown
+      KEYBOARD_KEY_7004b=home
+      KEYBOARD_KEY_7004e=end
+
+Please use identication as above.
+
+The above maps Pos1 to PageUp and End to PageDown for the TrekStor keyboard.
+
+
+
