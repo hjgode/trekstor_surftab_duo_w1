@@ -1,0 +1,44 @@
+#(parted) print                                                            
+#Model: MMC NCard (sd/mmc)
+#Disk /dev/mmcblk0: 31,0GB
+#Sector size (logical/physical): 512B/512B
+#Partition Table: gpt
+#Disk Flags: 
+#
+#Number  Start   End     Size    File system  Name                          Flags
+# 1      1049kB  556MB   555MB   ntfs         Basic data partition          hidden, diag
+# 2      556MB   661MB   105MB   fat32        EFI System Partition          boot, esp
+# 3      661MB   677MB   16,8MB               Microsoft reserved partition  msftres
+# 4      677MB   1751MB  1074MB  ext4
+# 5      1751MB  31,0GB  29,3GB  ext4
+#
+#(parted) 
+#
+#sdX, disk
+#/dev/mmcblk0
+#
+#sdXY, system partition
+#/dev/mmcblk0p5
+#
+#sdXX, EFI partition
+#/dev/mmcblk0p2
+###################################
+
+#sudo mount /dev/sdXY /mnt
+#sudo mount /dev/sdXX /mnt/boot/efi
+#for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done
+#sudo chroot /mnt
+#grub-install /dev/sdX
+#update-grub  
+#
+#Note : sdX = disk | sdXX = efi partition | sdXY = system partition
+#
+#To identify the partitions use GParted, the tool is included in the installation medium.
+#---------------------------------
+
+sudo mount /dev/mmcblk0p5 /mnt
+sudo mount /dev/mmcblk0p2 /mnt/boot/efi
+for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done
+sudo chroot /mnt
+grub-install /dev/mmcblk0
+update-grub  

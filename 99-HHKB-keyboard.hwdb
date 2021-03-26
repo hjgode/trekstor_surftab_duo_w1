@@ -1,0 +1,5 @@
+evdev:input:b0003v1C4Fp0063*
+  KEYBOARD_KEY_7004a=pageup
+  KEYBOARD_KEY_7004d=pagedown
+  KEYBOARD_KEY_7004b=home
+  KEYBOARD_KEY_7004e=end
