@@ -2,7 +2,7 @@
 
 Initial source: https://ianrenton.com/guides/install-linux-on-a-linx-1010b-tablet
 
-##My challenge to install Linux (Ubuntu 20.04) on a TrekStor SurfTab Duo W1
+## My challenge to install Linux (Ubuntu 20.04) on a TrekStor SurfTab Duo W1
 
 The Windows 10 installation on this TrekStor tablet with a keyboard extension is ugly. The main issue is the suspend resume, where the screen is not lit after a resume and has to be resumed with a press on the volume buttons or the home button.
 
@@ -10,7 +10,7 @@ First I started with a Fedora installation (30.1 live install), this works in ge
 
 The I found the above mentioned site about the Ubuntu installation. After unpacking the 20.04.02 iso (the 01 is not available any more), copy it to an USB stick and add the bootia32.efi to the stick. Then booted Ubuntu Live and selected Install to disk (minimal installation). I had done this three time, as the installer broke the USB files. Finally it worked bot the tablet did not show the new installation in the boot options. I needed to prepare the grub installation with grubia32.efi and run the Live USB ubuntu to install grub manually.
 
-###Some installation cmds
+### Some installation cmds
      sudo update-grub
      sudo update-grub2
 
@@ -21,7 +21,7 @@ The I found the above mentioned site about the Ubuntu installation. After unpack
 
      sudo update-grub && sudo update-grub2 && sudo grub-install
 
-####Correct the efi boot manager and boot order
+#### Correct the efi boot manager and boot order
 Note: these have to be adopted to your installation
 
      sudo efibootmgr -c --disk /dev/mmcblk0 --part 1
@@ -101,11 +101,11 @@ with the help of the site https://wiki.archlinux.org/index.php/Talk:Calibrating_
      #/etc/udev/rules.d/98-touchscreen-cal.rules
      ATTRS{name}=="Goodix Capacitive TouchScreen", ENV{LIBINPUT_CALIBRATION_MATRIX}="-1 0.0 1 0.0 1 0"
 
-#end
+# end
 Now I have ubuntu running fine on my TrekStor Duo W1 10.1 with Bay Trail proc and ugly sensor and touchscreen.
 
-#update
-##Repair EFI grub loader
+# update
+## Repair EFI grub loader
 
 In case you need to repair the boot loader or accidently get into the grub console: How to repair the EFI Grub loader using the ubuntu usb live media:
 
@@ -136,7 +136,7 @@ Then from the live usb ubuntu terminal:
 
 That's it.
 
-##Final change? Remapping keys of the hardware keyboard
+## Final change? Remapping keys of the hardware keyboard
 
 The TrekStor SurfTab Duo W1 10.1 comes with a attachable keyboard. Unfortunately it has PageUp and PageDown on the FN level, but Home and End is directly usabale. As I often need to scroll up and down using the Page Up/Down keys, I need these keys in the normal level of the keypad. I can remap after login/resume with the script:
 
